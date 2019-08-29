@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>机票报价系统首页</title>
+
+    <!-- Bootstrap -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/price.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="page-header">
+    <h1 align="center">机票报价系统 <small>天海广纳版</small></h1>
+</div>
+<div class="container" id="main">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-4 form-inline">
+            <span>出发城市:</span><input type="text" id="origin" class="form-control" placeholder="BJS">
+        </div>
+        <div class="col-md-4 form-inline">
+            <span>到达城市:</span><input type="text" id="dest" class="form-control" placeholder="BKK">
+        </div>
+        <div class="col-md-2"></div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-4 form-inline">
+            <span>去程日期:</span><input type="text" id="goDate" class="form-control" placeholder="2019-05-20">
+        </div>
+        <div class="col-md-4 form-inline">
+            <span>回程日期:</span><input type="text" id="backDate" class="form-control" placeholder="2019-05-20">
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            <button type="button" id="search" class="btn btn-success">搜索</button>
+        </div>
+    </div>
+    <div class="row">
+        <hr/>
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-2">
+            航班信息
+        </div>
+        <div class="col-md-1">
+            起飞时间
+        </div>
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-1">
+            到达时间
+        </div>
+        <div class="col-md-1">
+            退改签
+        </div>
+        <div class="col-md-1">
+            行李额
+        </div>
+        <div class="col-md-1">
+            价格
+        </div>
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row">
+        <hr/>
+    </div>
+
+
+</div>
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="./js/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="./js/bootstrap.min.js"></script>
+
+<script>
+    function parseHtml(flight){
+        var html = "<div class=\"row price-row\">\n" +
+            "        <div class=\"col-md-1\"></div>\n" +
+            "        <div class=\"col-md-2\">\n" +
+            "            <span>中国国航"+flight.carrier+flight.flightNo+"</span><br>\n" +
+            "            <span class=\"word-color-gray\">"+flight.aircraft+"</span>\n" +
+            "        </div>\n" +
+            "        <div class=\"col-md-1\">\n" +
+            "            <span >"+flight.departTime+"</span><br/>\n" +
+            "            <span class=\"word-color-gray\">"+flight.origin+"</span>\n" +
+            "        </div>\n" +
+            "        <div class=\"col-md-1\">\n" +
+            "            <span class=\"glyphicon glyphicon-arrow-right\"></span>\n" +
+            "        </div>\n" +
+            "        <div class=\"col-md-1\">\n" +
+            "            <span>"+flight.arrivalTime+"<span><br/>\n" +
+            "            <span class=\"word-color-gray\">"+flight.dest+"</span>\n" +
+            "        </div>\n" +
+            "        <div class=\"col-md-1\">\n" +
+            "            "+flight.rule+"\n" +
+            "        </div>\n" +
+            "        <div class=\"col-md-1\">\n" +
+            "            "+flight.baggage+"\n" +
+            "        </div>\n" +
+            "        <div class=\"col-md-1\">\n" +
+            "            "+flight.price+"\n" +
+            "        </div>\n" +
+            "        <div class=\"col-md-1\">\n" +
+            "            <button type=\"button\" class=\"btn btn-success\">购买</button>\n" +
+            "        </div>\n" +
+            "    </div>";
+        return html;
+    }
+
+    function clear(){
+        var i = 0;
+        $(".row").each(function () {
+            if(i>5){
+                $(this).remove();
+            }
+            i++;
+        });
+    }
+
+    $("#search").on("click", function () {
+        var origin = $("#origin").val();
+        var dest = $("#dest").val();
+        var goDate = $("#goDate").val();
+        var backDate = $("#backDate").val();
+        var param = {}
+        param.origin = origin;
+        param.dest = dest;
+        param.departDate = goDate;
+        param.id = 0;
+        clear();
+        //param.backDate = backDate;
+        $.get("/getFlight", param, function (data, status) {
+            if(status == 'success'){
+                if(data.code != 0){
+                    var more = "<div class=\"row\" id=\"more\">\n" +
+                        "        <div class=\"col-md-12\">\n" +
+                        "            <p class=\"bg-info\" align=\"center\"><a href=\"javascript:;\">没有航班信息</a></p>\n" +
+                        "        </div>\n" +
+                        "    </div>";
+                    $("#main").append(more);
+                    return;
+                }
+
+                var list = data.data;
+                var result = "";
+                for(var i=0; i<list.length; i++){
+                    result += parseHtml(list[i]);
+                }
+                $("#main").append(result);
+
+                if(!data.isLast){
+                    var more = "<div class=\"row\" id=\"more\">\n" +
+                        "        <div class=\"col-md-12\">\n" +
+                        "            <p class=\"bg-info\" align=\"center\"><a href=\"javascript:;\">加载更多</a></p>\n" +
+                        "        </div>\n" +
+                        "    </div>";
+                    $("#main").append(more);
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

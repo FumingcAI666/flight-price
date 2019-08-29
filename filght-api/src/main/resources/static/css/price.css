@@ -1,0 +1,24 @@
+.col-center-block {
+    float: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.my-page-header {
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eee;
+    float: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.word-color-gray{
+    color: gray;
+}
+
+.price-row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

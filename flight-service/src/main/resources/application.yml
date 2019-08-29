@@ -1,0 +1,87 @@
+#默认使用配置
+spring:
+  profiles:
+    active: dev
+  application:
+    name: price-service
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    timeout: 1000
+    jedis:
+      pool:
+        # 连接池最大连接数
+        max-active: 8
+        max-idle: 8
+        min-idle: 8
+
+#公共配置与profiles选择无关 mapperLocations指的路径是src/main/resources
+mybatis:
+  typeAliasesPackage: com.haina.flight.price.model
+  mapperLocations: classpath:mapper/*.xml
+
+###服务启动端口号
+server:
+  port: 8001
+
+###服务注册到eureka地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+    ###因为该应用为注册中心，不会注册自己
+    register-with-eureka: true
+    ###是否需要从eureka上获取注册信息
+    fetch-registry: true
+  instance:
+    appname: fegin-flight-service
+    virtual-host-name: fegin-flight-service
+    secure-virtual-host-name: fegin-flight-service
+---
+
+#开发配置
+#默认使用配置
+spring:
+  profiles:
+    active: test
+  application:
+    name: price-service
+
+#公共配置与profiles选择无关 mapperLocations指的路径是src/main/resources
+mybatis:
+  typeAliasesPackage: com.haina.flight.price.model
+  mapperLocations: classpath:mapper/*.xml
+
+###服务启动端口号
+server:
+  port: 8001
+
+###服务注册到eureka地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+    ###因为该应用为注册中心，不会注册自己
+    register-with-eureka: true
+    ###是否需要从eureka上获取注册信息
+    fetch-registry: true
+  instance:
+    appname: fegin-flight-service
+    virtual-host-name: fegin-flight-service
+    secure-virtual-host-name: fegin-flight-service
+---
+
+#开发配置
+spring:
+  profiles: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/flight?serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource

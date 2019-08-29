@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haina.flight.price.dao.FlightPriceMapper">
+  <resultMap id="BaseResultMap" type="com.haina.flight.price.model.FlightPrice">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="origin" jdbcType="VARCHAR" property="origin" />
+    <result column="dest" jdbcType="VARCHAR" property="dest" />
+    <result column="baggage" jdbcType="VARCHAR" property="baggage" />
+    <result column="rule" jdbcType="VARCHAR" property="rule" />
+    <result column="depart_date" jdbcType="VARCHAR" property="departDate" />
+    <result column="depart_time" jdbcType="VARCHAR" property="departTime" />
+    <result column="arrival_date" jdbcType="VARCHAR" property="arrivalDate" />
+    <result column="arrival_time" jdbcType="VARCHAR" property="arrivalTime" />
+    <result column="carrier" jdbcType="VARCHAR" property="carrier" />
+    <result column="flight_no" jdbcType="VARCHAR" property="flightNo" />
+    <result column="aircraft" jdbcType="VARCHAR" property="aircraft" />
+    <result column="act_flight_no" jdbcType="VARCHAR" property="actFlightNo" />
+    <result column="act_carrier" jdbcType="VARCHAR" property="actCarrier" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, origin, dest, baggage, rule, depart_date, depart_time, arrival_date, arrival_time,
+    carrier, flight_no, aircraft, act_flight_no, act_carrier, price, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from flight_price
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from flight_price
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByODAndDepartDate" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from flight_price
+    where origin=#{origin} and dest = #{dest} and depart_date = #{departDate}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from flight_price
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.haina.flight.price.model.FlightPrice">
+    insert into flight_price (id, origin, dest,
+      baggage, rule, depart_date,
+      depart_time, arrival_date, arrival_time,
+      carrier, flight_no, aircraft,
+      act_flight_no, act_carrier, price,
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{origin,jdbcType=VARCHAR}, #{dest,jdbcType=VARCHAR},
+      #{baggage,jdbcType=VARCHAR}, #{rule,jdbcType=VARCHAR}, #{departDate,jdbcType=VARCHAR},
+      #{departTime,jdbcType=VARCHAR}, #{arrivalDate,jdbcType=VARCHAR}, #{arrivalTime,jdbcType=VARCHAR},
+      #{carrier,jdbcType=VARCHAR}, #{flightNo,jdbcType=VARCHAR}, #{aircraft,jdbcType=VARCHAR},
+      #{actFlightNo,jdbcType=VARCHAR}, #{actCarrier,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.haina.flight.price.model.FlightPrice">
+    insert into flight_price
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="origin != null">
+        origin,
+      </if>
+      <if test="dest != null">
+        dest,
+      </if>
+      <if test="baggage != null">
+        baggage,
+      </if>
+      <if test="rule != null">
+        rule,
+      </if>
+      <if test="departDate != null">
+        depart_date,
+      </if>
+      <if test="departTime != null">
+        depart_time,
+      </if>
+      <if test="arrivalDate != null">
+        arrival_date,
+      </if>
+      <if test="arrivalTime != null">
+        arrival_time,
+      </if>
+      <if test="carrier != null">
+        carrier,
+      </if>
+      <if test="flightNo != null">
+        flight_no,
+      </if>
+      <if test="aircraft != null">
+        aircraft,
+      </if>
+      <if test="actFlightNo != null">
+        act_flight_no,
+      </if>
+      <if test="actCarrier != null">
+        act_carrier,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="origin != null">
+        #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="dest != null">
+        #{dest,jdbcType=VARCHAR},
+      </if>
+      <if test="baggage != null">
+        #{baggage,jdbcType=VARCHAR},
+      </if>
+      <if test="rule != null">
+        #{rule,jdbcType=VARCHAR},
+      </if>
+      <if test="departDate != null">
+        #{departDate,jdbcType=VARCHAR},
+      </if>
+      <if test="departTime != null">
+        #{departTime,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalDate != null">
+        #{arrivalDate,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalTime != null">
+        #{arrivalTime,jdbcType=VARCHAR},
+      </if>
+      <if test="carrier != null">
+        #{carrier,jdbcType=VARCHAR},
+      </if>
+      <if test="flightNo != null">
+        #{flightNo,jdbcType=VARCHAR},
+      </if>
+      <if test="aircraft != null">
+        #{aircraft,jdbcType=VARCHAR},
+      </if>
+      <if test="actFlightNo != null">
+        #{actFlightNo,jdbcType=VARCHAR},
+      </if>
+      <if test="actCarrier != null">
+        #{actCarrier,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.haina.flight.price.model.FlightPrice">
+    update flight_price
+    <set>
+      <if test="origin != null">
+        origin = #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="dest != null">
+        dest = #{dest,jdbcType=VARCHAR},
+      </if>
+      <if test="baggage != null">
+        baggage = #{baggage,jdbcType=VARCHAR},
+      </if>
+      <if test="rule != null">
+        rule = #{rule,jdbcType=VARCHAR},
+      </if>
+      <if test="departDate != null">
+        depart_date = #{departDate,jdbcType=VARCHAR},
+      </if>
+      <if test="departTime != null">
+        depart_time = #{departTime,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalDate != null">
+        arrival_date = #{arrivalDate,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalTime != null">
+        arrival_time = #{arrivalTime,jdbcType=VARCHAR},
+      </if>
+      <if test="carrier != null">
+        carrier = #{carrier,jdbcType=VARCHAR},
+      </if>
+      <if test="flightNo != null">
+        flight_no = #{flightNo,jdbcType=VARCHAR},
+      </if>
+      <if test="aircraft != null">
+        aircraft = #{aircraft,jdbcType=VARCHAR},
+      </if>
+      <if test="actFlightNo != null">
+        act_flight_no = #{actFlightNo,jdbcType=VARCHAR},
+      </if>
+      <if test="actCarrier != null">
+        act_carrier = #{actCarrier,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.haina.flight.price.model.FlightPrice">
+    update flight_price
+    set origin = #{origin,jdbcType=VARCHAR},
+      dest = #{dest,jdbcType=VARCHAR},
+      baggage = #{baggage,jdbcType=VARCHAR},
+      rule = #{rule,jdbcType=VARCHAR},
+      depart_date = #{departDate,jdbcType=VARCHAR},
+      depart_time = #{departTime,jdbcType=VARCHAR},
+      arrival_date = #{arrivalDate,jdbcType=VARCHAR},
+      arrival_time = #{arrivalTime,jdbcType=VARCHAR},
+      carrier = #{carrier,jdbcType=VARCHAR},
+      flight_no = #{flightNo,jdbcType=VARCHAR},
+      aircraft = #{aircraft,jdbcType=VARCHAR},
+      act_flight_no = #{actFlightNo,jdbcType=VARCHAR},
+      act_carrier = #{actCarrier,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
