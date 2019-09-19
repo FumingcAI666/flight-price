@@ -45,25 +45,25 @@ public class ZkWatchServiceImpl implements Watcher {
     */
     @Override
     public void process(WatchedEvent watchedEvent) {
-        if (watchedEvent.getState() == Event.KeeperState.SyncConnected){
-            if (watchedEvent.getType() == Event.EventType.None && null == watchedEvent.getPath()){
+        if (watchedEvent.getState() == Event.KeeperState.SyncConnected) {
+            if (watchedEvent.getType() == Event.EventType.None && null == watchedEvent.getPath()) {
                 System.out.println("连接上了服务器");
-            } else if (watchedEvent.getType() == Event.EventType.NodeChildrenChanged){
+            } else if (watchedEvent.getType() == Event.EventType.NodeChildrenChanged) {
                 //字节点发生变化的状态
                 System.out.println("节点发生了变化");
-            } else if (watchedEvent.getType() == Event.EventType.NodeDataChanged){
+            } else if (watchedEvent.getType() == Event.EventType.NodeDataChanged) {
                 System.out.println("节点的值发生了变化");
                 System.out.println("改变的path是:" + watchedEvent.getPath());
 
                 Stat stat = new Stat();
                 byte[] data = new byte[0];
                 try {
-                    data = zooKeeper.getData(watchedEvent.getPath(),true ,stat);
+                    data = zooKeeper.getData(watchedEvent.getPath(), true, stat);
                     String str = new String(data);
 
-                    if(watchedEvent.getPath().equals("abc")){
+                    if ("abc".equals(watchedEvent.getPath())) {
                         constants.abc = Integer.valueOf(str);
-                    }else if(watchedEvent.getPath().equals("def")){
+                    } else if ("def".equals(watchedEvent.getPath())) {
                         constants.abc = Integer.valueOf(str);
                     }
 

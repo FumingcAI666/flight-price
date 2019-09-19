@@ -21,7 +21,7 @@ public class TestController {
 
     @RequestMapping("/getFlight")
     public FlightPrice getFlightPrice(Long id){
-        return flightPriceMapper.selectById(1l);
+        return flightPriceMapper.selectById(1L);
     }
 
     @RequestMapping("getFlight01")

@@ -10,19 +10,19 @@ import java.util.List;
  * @date 2019/6/26
  */
 public interface FlightPriceMapper {
-        int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Long id);
 
-        int insert(FlightPrice record);
+    int insert(FlightPrice record);
 
-        int insertSelective(FlightPrice record);
+    int insertSelective(FlightPrice record);
 
-        FlightPrice selectByPrimaryKey(Long id);
+    FlightPrice selectByPrimaryKey(Long id);
 
-        int updateByPrimaryKeySelective(FlightPrice record);
+    int updateByPrimaryKeySelective(FlightPrice record);
 
-        int updateByPrimaryKey(FlightPrice record);
+    int updateByPrimaryKey(FlightPrice record);
 
-        FlightPrice selectById(Long id);
+    FlightPrice selectById(Long id);
 
-        List<FlightPrice> selectByODAndDepartDate(@Param("origin") String origin, @Param("dest") String dest, @Param("departDate") String departDate);
-    }
+    List<FlightPrice> selectByODAndDepartDate(@Param("origin") String origin, @Param("dest") String dest, @Param("departDate") String departDate);
+}

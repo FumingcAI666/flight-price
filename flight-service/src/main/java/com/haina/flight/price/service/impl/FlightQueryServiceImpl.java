@@ -38,28 +38,29 @@ public class FlightQueryServiceImpl implements FlightQueryService {
         // hget map abc
         // hgetall map (取出来所有键值对)
         //
-        String key = generateKey(orgign,dest,departDate);
+        String key = generateKey(orgign, dest, departDate);
         List<FlightPrice> cacheDate = iCacheManager.getFromCache(key);
-        if(CollectionUtils.isNotEmpty(cacheDate)) {
+        if (CollectionUtils.isNotEmpty(cacheDate)) {
             System.out.println("read from cache");
             return cacheDate;
         }
-        List<FlightPrice> dbDate = flightPriceMapper.selectByODAndDepartDate(orgign,dest,departDate);
-        if(CollectionUtils.isNotEmpty(dbDate)){
+        List<FlightPrice> dbDate = flightPriceMapper.selectByODAndDepartDate(orgign, dest, departDate);
+        if (CollectionUtils.isNotEmpty(dbDate)) {
             System.out.println("read from db,and save to cache");
-            iCacheManager.saveToCache(key,dbDate);
+            iCacheManager.saveToCache(key, dbDate);
         }
         return dbDate;
     }
 
     /**
      * 生成key
+     *
      * @param origin
      * @param dest
      * @param departDate
      * @return
      */
-    private String generateKey(String origin, String dest ,String departDate){
-        return Joiner.on("-").join(origin,dest,departDate);
+    private String generateKey(String origin, String dest, String departDate) {
+        return Joiner.on("-").join(origin, dest, departDate);
     }
 }

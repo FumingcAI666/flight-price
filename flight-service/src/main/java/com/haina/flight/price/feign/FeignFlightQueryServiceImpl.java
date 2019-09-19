@@ -19,13 +19,18 @@ public class FeignFlightQueryServiceImpl implements FeignFlightQueryService {
 
     @Override
     public List<Flight> getFlightByODAndDepartDate(@RequestBody FlightRequest request) {
-        List<FlightPrice> flightPriceList =  flightQueryService.getFligthByODAnfDepartDate(request.getOrigin(),request.getDest(),request.getDepartDate());
+        List<FlightPrice> flightPriceList = flightQueryService.getFligthByODAnfDepartDate(request.getOrigin(), request.getDest(), request.getDepartDate());
 
         return flightPriceList.stream().map(price -> convertFlightPrice(price)).collect(Collectors.toList());
     }
 
-    //类型转换，把flightPrice类型转换成flight类型
-    private Flight convertFlightPrice(FlightPrice flightPrice){
+    /**
+     * 类型转换，把flightPrice类型转换成flight类型
+     *
+     * @param flightPrice
+     * @return
+     */
+    private Flight convertFlightPrice(FlightPrice flightPrice) {
         Flight result = new Flight();
         result.setId(flightPrice.getId());
         result.setOrigin(flightPrice.getOrigin());
