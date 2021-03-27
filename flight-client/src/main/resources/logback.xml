@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="60 seconds"
+               debug="false">
+    <!-- scan: 当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。 scanPeriod: 设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。
+        debug: 当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false -->
+
+    <!-- 应用名称 -->
+    <property name="app_name" value="tzgServiceUser" />
+
+    <!--日志文件的保存路径,首先查找系统属性-Dlog.dir,如果存在就使用其；否则，在当前目录下创建名为logs目录做日志存放的目录 -->
+    <property name="log_home" value="${log.dir:-logs}/${app_name}" />
+
+    <!-- 日志输出格式 -->
+    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+    <!-- <property name="console_pattern"
+              value="%-5level \t %d{yyyy-MM-dd HH:mm:ss.SSS} \t %msg \t [%thread] \t %logger{80}%n" /> -->
+
+    <property name="console_pattern"
+              value="[%highlight(%-5level)]%green([%date{yyyy-MM-dd HH:mm:ss}]) %boldMagenta([%thread-%logger{96}-%mdc{client}-%line line])  - %cyan(%msg%n)"/>
+
+
+    <property name="info_pattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg %n" />
+
+    <property name="error_pattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg %n" />
+
+    <contextName>${app_name}</contextName>
+
+    <!-- 信息输出到文件 -->
+    <appender name="info"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_home}/info/%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${info_pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!-- 错误输出到文件 -->
+    <appender name="error"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_home}/error/%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${error_pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <encoder>
+            <Pattern>${console_pattern}</Pattern>
+            <!-- 设置字符集 -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+
+
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="info" />
+        <appender-ref ref="error" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>
